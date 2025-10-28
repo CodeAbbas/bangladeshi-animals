@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
 // Layout
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
+import Header from './components/layout/Header.jsx';
+import Footer from './components/layout/Footer.jsx';
 
-// Pages
-import HomePage from './pages/HomePage';
-import CategoryPage from './pages/CategoryPage';
-import AnimalDetailPage from './pages/AnimalDetailPage';
-import SearchPage from './pages/SearchPage';
-import BlogPage from './pages/BlogPage';
-import AboutPage from './pages/AboutPage';
+// Pages (Ensure all these end in .jsx)
+import HomePage from './pages/HomePage.jsx';
+import CategoryPage from './pages/CategoryPage.jsx';
+import AnimalDetailPage from './pages/AnimalDetailPage.jsx';
+import SearchPage from './pages/SearchPage.jsx';
+import BlogPage from './pages/BlogPage.jsx';
+import AboutPage from './pages/AboutPage.jsx'; // This will fix the error
 
 // Data
-import { animalData } from './data/animalData';
+import { animalData } from './data/animalData.js';
 
 export default function App() {
   const [page, setPage] = useState('home');
@@ -85,7 +85,7 @@ export default function App() {
       <Header navigateTo={navigateTo} />
       <main className="flex-grow">
         <AnimatePresence mode="wait">
-          {/* the 'page' state as a key to force re-mounting on page change */}
+          {/* We use the 'page' state as a key to force re-mounting on page change */}
           {React.cloneElement(renderPage(), { key: page })}
         </AnimatePresence>
       </main>
