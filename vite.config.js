@@ -4,9 +4,4 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server: {                // <-- Add this server section
-    watch: {
-      usePolling: true,
-    }
-  }                        // <-- End server section
 })
