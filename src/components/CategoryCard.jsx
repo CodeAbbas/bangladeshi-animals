@@ -23,7 +23,7 @@ const CategoryCard = ({ category, navigateTo }) => {
     <motion.div
       whileHover={{ scale: 1.05, y: -5 }}
       transition={{ type: "spring", stiffness: 300, damping: 15 }}
-      className="bg-white p-6 rounded-2xl shadow-lg text-center cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bangla-green focus-visible:ring-offset-2"
+      className="bg-white backdrop-blur-sm p-6 rounded-2xl shadow-lg text-center cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bangla-green focus-visible:ring-offset-2"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       role="button"
