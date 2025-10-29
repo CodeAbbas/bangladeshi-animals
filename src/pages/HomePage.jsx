@@ -13,7 +13,7 @@ import { categories } from '../data/pageData';
 const HomePage = ({ navigateTo }) => (
   <PageTransition>
     {/* Hero Section */}
-    <section className="relative bg-bangla-green h-[60vh] min-h-[460px] text-white flex items-center">
+    <section className="relative bg-bangla-green h-[70vh] min-h-[460px] text-white flex items-center">
       <div
   className="absolute inset-0 bg-cover bg-center brightness-110 contrast-80"
   style={{ backgroundImage: "url('/src/assets/sundarbans.webp')" }}
@@ -27,7 +27,9 @@ const HomePage = ({ navigateTo }) => (
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          Discover the Wildlife of Bangladesh
+          Discover the Wildlife of <span className="relative inline-block text-transparent bg-clip-text bg-[url('/src/assets/flag-wave.gif')] bg-cover bg-center animate-pulse drop-shadow-lg">
+  Bangladesh
+</span>
         </motion.h1>
         <motion.p 
           className="mt-6 text-lg md:text-xl text-green-100 max-w-2xl mx-auto"
