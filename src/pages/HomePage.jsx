@@ -15,7 +15,7 @@ const HomePage = ({ navigateTo }) => (
     {/* Hero Section */}
     <section className="relative bg-bangla-green h-[60vh] min-h-[460px] text-white flex items-center">
       <div
-  className="absolute inset-0 bg-cover bg-center brightness-110 contrast-105"
+  className="absolute inset-0 bg-cover bg-center brightness-110 contrast-80"
   style={{ backgroundImage: "url('/src/assets/sundarbans.webp')" }}
   role="presentation"
 ></div>
