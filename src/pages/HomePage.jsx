@@ -13,7 +13,7 @@ import { categories } from '../data/pageData';
 const HomePage = ({ navigateTo }) => (
   <PageTransition>
     {/* Hero Section */}
-    <section className="relative bg-bangla-green h-[60vh] min-h-[400px] text-white flex items-center">
+    <section className="relative bg-bangla-green h-[60vh] min-h-[440px] text-white flex items-center">
       <div
         className="absolute inset-0 bg-cover bg-center opacity-75"
         style={{ backgroundImage: "url('/src/assets/sundarbans.webp')" }}
@@ -44,6 +44,26 @@ const HomePage = ({ navigateTo }) => (
 >
   Start Exploring
 </motion.button>
+{/*button2*/}
+<motion.button
+  className="mt-8 bg-white/30 backdrop-blur-md border border-white/50 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg hover:bg-white/40 transition-all transform hover:scale-105"
+  onClick={() => navigateTo('search')}
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+>
+  Start Exploring
+</motion.button>
+
+{/*button3*/}
+<motion.button
+  className="mt-8 bg-gradient-to-r from-green-300 via-white to-green-300 text-bangla-green font-extrabold py-3 px-10 rounded-full text-lg shadow-xl hover:from-green-200 hover:to-white transition-all transform hover:scale-105 border border-green-200"
+  onClick={() => navigateTo('search')}
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+>
+  Start Exploring
+</motion.button>
+
 
       </div>
     </section>
