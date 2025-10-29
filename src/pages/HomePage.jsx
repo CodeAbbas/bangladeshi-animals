@@ -13,7 +13,7 @@ import { categories } from '../data/pageData';
 const HomePage = ({ navigateTo }) => (
   <PageTransition>
     {/* Hero Section */}
-    <section className="relative bg-bangla-green h-[70vh] min-h-[460px] text-white flex items-center">
+    <section className="relative bg-bangla-green h-[70svh] min-h-[460px] text-white flex items-center">
       <div
   className="absolute inset-0 bg-cover bg-center brightness-110 contrast-80"
   style={{ backgroundImage: "url('/src/assets/sundarbans.webp')" }}

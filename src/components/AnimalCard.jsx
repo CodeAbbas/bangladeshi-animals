@@ -1,11 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import ConservationBadge from './ConservationBadge';
-import { truncateText } from '../utils/helpers';
+import ConservationBadge from './ConservationBadge'; // We'll use this for the "Endangered" text
 
 /**
- * Reusable Animal Card Component
+ * Reusable Animal Card Component (New Design)
+ * Design based on user request for a full-bleed image with a text overlay in the bottom-left.
  * @param {{animal: object, navigateTo: Function}} props
  */
 const AnimalCard = ({ animal, navigateTo }) => {
@@ -24,34 +23,41 @@ const AnimalCard = ({ animal, navigateTo }) => {
     <motion.div
       whileHover={{ scale: 1.03 }}
       transition={{ type: "spring", stiffness: 300, damping: 15 }}
-      className="bg-white shadow-xl rounded-2xl overflow-hidden cursor-pointer h-full flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-bangla-green focus-visible:ring-offset-2"
+      // Card is now relative, with overflow-hidden and a fixed height (h-72)
+      // The original `h-full` is replaced to ensure a consistent size
+      className="relative shadow-xl rounded-2xl overflow-hidden cursor-pointer group h-72 focus:outline-none focus-visible:ring-2 focus-visible:ring-bangla-green focus-visible:ring-offset-2"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex="0"
       aria-label={`Learn more about ${animal.name}`}
     >
+      {/* Full-bleed Image */}
       <img
         src={animal.image}
         alt={animal.name}
-        className="w-full h-48 object-cover"
+        // Use h-full and w-full to fill the parent card
+        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/600x400/cccccc/FFFFFF?text=Image+Not+Found'; }}
       />
-      <div className="p-4 flex-grow flex flex-col">
-        <div className="mb-2">
+
+      {/* Gradient Overlay for text readability (bottom-up) */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" aria-hidden="true"></div>
+
+      {/* Text Overlay Content */}
+      <div className="absolute bottom-0 left-0 p-4 text-white">
+        {/* Use the existing ConservationBadge component for the status */}
+        <div className="mb-1">
           <ConservationBadge status={animal.conservationStatus} />
         </div>
-        <h3 className="text-xl font-bold text-gray-800">{animal.name}</h3>
-        <p className="text-md italic text-gray-600">{animal.banglaName}</p>
-        <p className="text-sm font-semibold text-bangla-green mt-1">{animal.category}</p>
-        <p className="mt-2 text-gray-700 text-sm flex-grow">
-          {truncateText(animal.description, 90)}
-        </p>
-        <div className="mt-4 text-right">
-          <span className="text-bangla-green font-semibold text-sm inline-flex items-center">
-            Learn More <ArrowRight className="ml-1 h-4 w-4" />
-          </span>
-        </div>
+        
+        {/* English Name */}
+        <h3 className="text-xl font-bold text-white drop-shadow-md">{animal.name}</h3>
+        
+        {/* Bengali Name */}
+        <p className="text-lg italic text-gray-200 drop-shadow-md">{animal.banglaName}</p>
+        
+        {/* No description, category, or "Learn More" text as per request */}
       </div>
     </motion.div>
   );
