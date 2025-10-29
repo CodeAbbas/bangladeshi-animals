@@ -13,7 +13,7 @@ import { categories } from '../data/pageData';
 const HomePage = ({ navigateTo }) => (
   <PageTransition>
     {/* Hero Section */}
-    <section className="relative bg-bangla-green h-[60vh] min-h-[440px] text-white flex items-center">
+    <section className="relative bg-bangla-green h-[60vh] min-h-[460px] text-white flex items-center">
       <div
         className="absolute inset-0 bg-cover bg-center opacity-75"
         style={{ backgroundImage: "url('/src/assets/sundarbans.webp')" }}
@@ -29,7 +29,7 @@ const HomePage = ({ navigateTo }) => (
           Discover the Wildlife of Bangladesh
         </motion.h1>
         <motion.p 
-          className="mt-4 text-lg md:text-xl text-green-100 max-w-2xl mx-auto"
+          className="mt-6 text-lg md:text-xl text-green-100 max-w-2xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
@@ -37,7 +37,7 @@ const HomePage = ({ navigateTo }) => (
           A comprehensive guide to the mammals, birds, reptiles, and aquatic life of a nation rich in biodiversity.
         </motion.p>
         <motion.button
-  className="mt-10 bg-white/20 backdrop-blur-sm border border-white/40 text-white font-bold py-3 px-10 rounded-full text-lg shadow-xl hover:bg-white/30 hover:border-white/60 transition-all transform hover:scale-105"
+  className="mt-10 bg-white/20 backdrop-blur-sm border border-white/40 text-white font-bold py-3 px-10 rounded-full text-lg tracking-wide shadow-xl hover:bg-white/30 hover:border-white/60 transition-all transform hover:scale-105"
   onClick={() => navigateTo('search')}
   whileHover={{ scale: 1.05 }}
   whileTap={{ scale: 0.95 }}
