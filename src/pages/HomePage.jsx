@@ -15,10 +15,11 @@ const HomePage = ({ navigateTo }) => (
     {/* Hero Section */}
     <section className="relative bg-bangla-green h-[60vh] min-h-[460px] text-white flex items-center">
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-75"
-        style={{ backgroundImage: "url('/src/assets/sundarbans.webp')" }}
-        role="presentation"
-      ></div>
+  className="absolute inset-0 bg-cover bg-center brightness-110 contrast-105"
+  style={{ backgroundImage: "url('/src/assets/sundarbans.webp')" }}
+  role="presentation"
+></div>
+
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         <motion.h1 
           className="text-4xl md:text-6xl font-extrabold tracking-tight"
