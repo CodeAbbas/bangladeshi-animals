@@ -16,7 +16,7 @@ const HomePage = ({ navigateTo }) => (
     <section className="relative bg-bangla-green h-[60vh] min-h-[400px] text-white flex items-center">
       <div
         className="absolute inset-0 bg-cover bg-center opacity-20"
-        style={{ backgroundImage: "url('https://placehold.co/1600x900/004d00/FFFFFF?text=Sundarbans+Silhouette')" }}
+        style={{ backgroundImage: "url('/src/assets/sundarbans.webp')" }}
         role="presentation"
       ></div>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
