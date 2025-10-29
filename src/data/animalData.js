@@ -8,7 +8,7 @@ export const animalData = [
     "habitat": "Sundarbans mangrove forest",
     "conservationStatus": "Endangered",
     "description": "The Royal Bengal Tiger is the national animal of Bangladesh, found in the Sundarbans. It's a symbol of power and a keystone species for the mangrove ecosystem.",
-    "image": "https://placehold.co/600x400/228B22/FFFFFF?text=Royal+Bengal+Tiger",
+    "image": "/src/assets/BengalTiger.webp",
     "distribution": ["Khulna", "Bagerhat", "Satkhira"],
     "diet": "Carnivore",
     "averageLifespan": "10–15 years (in wild)"
