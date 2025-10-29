@@ -37,16 +37,14 @@ const HomePage = ({ navigateTo }) => (
           A comprehensive guide to the mammals, birds, reptiles, and aquatic life of a nation rich in biodiversity.
         </motion.p>
         <motion.button
-          className="mt-8 bg-white text-bangla-green font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:bg-gray-100 hover:shadow-xl transition-all transform hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-bangla-green"
-          onClick={() => navigateTo('search')}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-        >
-          Start Exploring
-        </motion.button>
+  className="mt-8 bg-white/20 backdrop-blur-lg border border-white/40 text-white font-bold py-3 px-10 rounded-full text-lg shadow-xl hover:bg-white/30 hover:border-white/60 transition-all transform hover:scale-105"
+  onClick={() => navigateTo('search')}
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+>
+  Start Exploring
+</motion.button>
+
       </div>
     </section>
 
