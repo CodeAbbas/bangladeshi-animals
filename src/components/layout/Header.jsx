@@ -5,12 +5,9 @@ import {
   X,
   Search,
   ChevronDown,
-  Sun,
-  Moon,
   Home,
   BookOpen,
-  Info,
-  Leaf
+  Info
 } from 'lucide-react';
 import { categories } from '../../data/pageData'; // Import categories
 
@@ -20,10 +17,6 @@ import { categories } from '../../data/pageData'; // Import categories
  */
 const Header = ({ navigateTo }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false); // Basic dark mode toggle
-  
-  // Note: For a real dark mode, you'd add/remove 'dark' class from <html>
-  const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
   
   const navLinks = [
     { name: "Home", page: "home", icon: Home },
@@ -96,13 +89,7 @@ const Header = ({ navigateTo }) => {
           
           {/* Mobile Menu Button & Dark Mode Toggle */}
           <div className="flex items-center">
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-full text-gray-600 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-bangla-green"
-              aria-label={isDarkMode ? "Activate light mode" : "Activate dark mode"}
-            >
-              {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </button>
+            
             <div className="md:hidden ml-2">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
