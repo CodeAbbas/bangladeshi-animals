@@ -27,7 +27,7 @@ const HomePage = ({ navigateTo }) => (
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          Discover the Wildlife of <span className="relative inline-block text-transparent text-5xl md:text-7xl font-extrabold tracking-tight bg-clip-text bg-[url('/src/assets/flag-wave.gif')] bg-cover bg-center animate-pulse drop-shadow-lg">
+          Discover the Wildlife of <span className="relative inline-block text-transparent text-6xl md:text-7xl font-extrabold tracking-tight bg-clip-text bg-[url('/src/assets/flag-wave.gif')] bg-cover bg-center animate-pulse drop-shadow-lg">
   Bangladesh
 </span>
         </motion.h1>
