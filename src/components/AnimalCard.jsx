@@ -37,7 +37,7 @@ const AnimalCard = ({ animal, navigateTo }) => {
         src={animal.image}
         alt={animal.name}
         // Use h-full and w-full to fill the parent card
-        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        className="w-full h-auto max-h-[500px] object-cover transition-transform duration-300 group-hover:scale-105"
         onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/600x400/cccccc/FFFFFF?text=Image+Not+Found'; }}
       />
 
