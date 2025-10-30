@@ -88,7 +88,7 @@ const SearchBar = ({
             className="absolute top-full left-0 right-0 z-30 w-[97%] mx-auto"
             style={{ marginTop: '0.50rem' }}
           >
-            <div className="bg-white shadow-lg rounded-lg border border-gray-200 overflow-hidden">
+            <div className="bg-white backdrop-blur-sm shadow-lg rounded-lg border border-gray-200 overflow-hidden">
               
               {/* --- Suggestion Item --- */}
               {suggestions.map(animal => (
