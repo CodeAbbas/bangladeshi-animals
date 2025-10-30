@@ -63,7 +63,7 @@ const SearchBar = ({
                   <button
                     type="button"
                     onClick={onClear}
-                    className="absolute right-1 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 rounded-full"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 rounded-full"
                     aria-label="Clear search"
                   >
                     
@@ -84,8 +84,8 @@ const SearchBar = ({
             animate={{ opacity: 1, transition: { delay: 0.1 } }}
             exit={{ opacity: 0 }}
             // Positions relative to the top 'relative mb-6' wrapper
-            className="absolute top-full left-0 right-0 z-10 w-[98%] mx-auto"
-            style={{ marginTop: '-0.75rem' }} // Pulls it up to overlap the form's shadow
+            className="absolute top-full left-0 right-0 z-10 w-[97%] mx-auto border border-gray-300"
+            style={{ marginTop: '-0.70rem' }} // Pulls it up to overlap the form's shadow
           >
             <div className="bg-white shadow-lg rounded-b-lg border border-t-0 border-gray-200 overflow-hidden">
               {suggestions.map(animal => (
