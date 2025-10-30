@@ -48,7 +48,7 @@ const SearchBar = ({
             transition={{ duration: 0.3 }}
             className="overflow-hidden" // Clips the form as it animates
           >
-            <form onSubmit={onSubmit} className="relative bg-white p-4 rounded-lg shadow-md">
+            <form onSubmit={onSubmit} className="relative bg-transparent rounded-lg">
               <div className="relative">
                 <input
                   ref={searchInputRef}
