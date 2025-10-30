@@ -112,7 +112,7 @@ const FilterModal = ({
               </button>
               <button 
                 onClick={onClose}
-                className="w-full sm:w-auto px-4 py-2 bg-bangla-green text-white font-medium rounded-lg shadow-md hover:bg-bangla-green-dark focus:outline-none focus:ring-2 focus:ring-bangla-green focus:ring-offset-2"
+                className="w-full sm:w-auto px-4 py-2 bg-bangla-green text-black font-medium rounded-lg shadow-md hover:bg-bangla-green-dark focus:outline-none focus:ring-2 focus:ring-bangla-green focus:ring-offset-2"
               >
                 Apply Filters
               </button>
