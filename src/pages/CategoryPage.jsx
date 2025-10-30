@@ -1,8 +1,9 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Search, SlidersHorizontal, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useMemo } from 'react';
+import { Search, SlidersHorizontal } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import AnimalCard from '../components/AnimalCard';
+import FilterModal from '../components/FilterModal'; // Import new component
+import SearchBar from '../components/SearchBar';   // Import new component
 import { animalData } from '../data/animalData';
 
 /**
@@ -10,50 +11,36 @@ import { animalData } from '../data/animalData';
  * @param {{navigateTo: Function, categoryName: string}} props
  */
 const CategoryPage = ({ navigateTo, categoryName }) => {
-  // State for the *final* submitted search filter
-  const [searchTerm, setSearchTerm] = useState('');
-  // State for the *live input* in the search bar
-  const [searchQuery, setSearchQuery] = useState('');
-  
+  // --- STATE MANAGEMENT ---
+  const [searchTerm, setSearchTerm] = useState('');     // Final submitted search
+  const [searchQuery, setSearchQuery] = useState('');   // Live input text
   const [statusFilter, setStatusFilter] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  
-  const searchInputRef = useRef(null);
 
-  // When search opens, set query to active filter and focus the input
-  useEffect(() => {
-    if (isSearchOpen) {
-      setSearchQuery(searchTerm); // Sync input with active filter
-      searchInputRef.current?.focus();
-    }
-  }, [isSearchOpen, searchTerm]); // Removed extra dependency
-
-  // Get list of animals in this category
+  // --- DATA COMPUTATION ---
   const categoryAnimals = useMemo(() => 
     animalData.filter(a => a.category === categoryName), 
     [categoryName]
   );
 
-  // Get unique statuses for the modal
   const conservationStatuses = useMemo(() => [
     'all', 
     ...new Set(categoryAnimals.map(a => a.conservationStatus))
   ], [categoryAnimals]);
 
-  // Generate live search suggestions
+  // Suggestions now appear live
   const suggestions = useMemo(() => {
-    if (searchQuery.length < 1) return []; // Show suggestions from 1+ char
-    
+    if (searchQuery.length < 1) return []; // Show from 1+ char
     const query = searchQuery.toLowerCase();
     return categoryAnimals.filter(animal => 
       animal.name.toLowerCase().includes(query) ||
-      animal.banglaName.includes(searchQuery) || // Keep exact match for Bengali
-      animal.description.toLowerCase().includes(query) // Also search description
-    ).slice(0, 4); // Show max 4 suggestions
+      animal.banglaName.includes(searchQuery) ||
+      animal.description.toLowerCase().includes(query)
+    ).slice(0, 4);
   }, [searchQuery, categoryAnimals]);
 
-  // Filter the main grid based on *submitted* search and filter
+  // Main grid filtering
   const filteredAnimals = useMemo(() => {
     const query = searchTerm.toLowerCase();
     return categoryAnimals
@@ -67,33 +54,35 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
       );
   }, [categoryAnimals, searchTerm, statusFilter]);
   
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  // --- EVENT HANDLERS ---
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    setSearchTerm(searchQuery);
+    setIsSearchOpen(false); // This fixes the overflow bug
+  };
+  
+  const handleSuggestionClick = (animal) => {
+    setSearchQuery(animal.name);
+    setSearchTerm(animal.name);
+    setIsSearchOpen(false); // This fixes the overflow bug
+  };
 
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setSearchTerm('');
+  };
+  
   const handleClearFilters = () => {
     setStatusFilter('all');
   };
   
-  // Handle search submission (Enter key)
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    setSearchTerm(searchQuery); // Submit the search
-    setIsSearchOpen(false); // Close the search bar
-  };
-  
-  // Handle clicking a suggestion
-  const handleSuggestionClick = (animal) => {
-    setSearchQuery(animal.name); // Set input text
-    setSearchTerm(animal.name); // Submit the search
-    setIsSearchOpen(false); // Close the search bar
-  };
-
-  // Handle clearing the search input
-  const handleClearSearch = () => {
-    setSearchQuery('');
-    setSearchTerm('');
-    searchInputRef.current?.focus();
-  };
+  // Toggles search and pre-fills input with current filter
+  const handleToggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen);
+    if (!isSearchOpen) {
+      setSearchQuery(searchTerm); 
+    }
+  }
 
   return (
     <PageTransition>
@@ -102,17 +91,16 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
         {/* --- Page Header & Toggles --- */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-4xl font-bold text-gray-800">{categoryName}</h1>
-          
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="p-2 rounded-full bg-white shadow-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-bangla-green"
+              onClick={handleToggleSearch}
+              className={`p-2 rounded-full bg-white shadow-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-bangla-green ${isSearchOpen ? 'bg-gray-100' : ''}`}
               aria-label="Toggle search"
             >
               <Search className="h-5 w-5" />
             </button>
             <button
-              onClick={openModal}
+              onClick={() => setIsModalOpen(true)}
               className="p-2 rounded-full bg-white shadow-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-bangla-green"
               aria-label="Open filters"
             >
@@ -121,156 +109,30 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
           </div>
         </div>
         
-        {/* --- Animated Search Bar & Suggestions --- */}
-        <AnimatePresence>
-          {isSearchOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="mb-6 overflow-hidden"
-            >
-              <form onSubmit={handleSearchSubmit} className="relative bg-white p-4 rounded-lg shadow-md">
-                <div className="relative">
-                  <input
-                    ref={searchInputRef}
-                    type="search"
-                    placeholder={`Search in ${categoryName}...`}
-                    className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-bangla-green"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
-                  
-                  {/* Clear Search Button */}
-                  {searchQuery.length > 0 && (
-                    <button
-                      type="button"
-                      onClick={handleClearSearch}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 rounded-full"
-                      aria-label="Clear search"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  )}
-                </div>
-                
-                {/* Suggestions List */}
-                {suggestions.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-white shadow-lg rounded-b-lg border border-t-0 border-gray-200 z-10">
-                    {suggestions.map(animal => (
-                      <button
-                        type="button"
-                        key={animal.id}
-                        onClick={() => handleSuggestionClick(animal)}
-                        className="w-full text-left px-4 py-3 hover:bg-gray-100 transition-colors"
-                      >
-                        {animal.name} <span className="text-gray-500 italic">({animal.banglaName})</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </form>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* --- Reusable Search Bar Component --- */}
+        <SearchBar
+          isOpen={isSearchOpen}
+          searchQuery={searchQuery}
+          onQueryChange={setSearchQuery}
+          onClear={handleClearSearch}
+          onSubmit={handleSearchSubmit}
+          suggestions={suggestions}
+          onSuggestionClick={handleSuggestionClick}
+          placeholder={`Search in ${categoryName}...`}
+        />
 
-        {/* --- Filter Modal (No Search Bar) --- */}
-        <AnimatePresence>
-          {isModalOpen && (
-            <>
-              <motion.div
-                onClick={closeModal}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
-              />
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90vw] max-w-md bg-white rounded-xl shadow-2xl overflow-hidden"
-              >
-                <div className="flex justify-between items-center p-6 pb-4">
-                  <h2 id="filter-modal-title" className="text-xl font-semibold text-gray-800">
-                    Filters
-                  </h2>
-                  <button onClick={closeModal} aria-label="Close modal" className="-mt-1 -mr-1 p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-bangla-green">
-                    <X className="h-5 w-5" />
-                  </button>
-                </div>
+        {/* --- Reusable Filter Modal Component --- */}
+        <FilterModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          statuses={conservationStatuses}
+          activeStatus={statusFilter}
+          onStatusChange={setStatusFilter}
+          onClear={handleClearFilters}
+        />
 
-                <div className="px-6 pb-6">
-                  <fieldset>
-                    <legend className="block text-sm font-medium text-gray-700 mb-3">
-                      Conservation Status
-                    </legend>
-                    <div className="space-y-2">
-                      {conservationStatuses.map((status) => {
-                        const isActive = statusFilter === status;
-                        return (
-                          <label
-                            key={status}
-                            htmlFor={status}
-                            className={`flex items-center justify-between w-full p-3 rounded-lg border cursor-pointer transition-all ${isActive ? 'bg-green-50 border-bangla-green ring-1 ring-bangla-green' : 'bg-white border-gray-300 hover:bg-gray-50'}`}
-                          >
-                            <input
-                              type="radio"
-                              id={status}
-                              name="conservationStatus"
-                              value={status}
-                              checked={isActive}
-                              onChange={() => setStatusFilter(status)}
-                              className="sr-only"
-                            />
-                            <span className={`font-medium ${isActive ? 'text-bangla-green' : 'text-gray-700'}`}>
-                              {status === 'all' ? 'All' : status}
-                            </span>
-                            <span 
-                              className={`
-                                h-5 w-5 rounded-full border-2 flex items-center justify-center transition-all
-                                ${isActive 
-                                  ? 'bg-bangla-green border-bangla-green' 
-                                  : 'bg-white border-gray-400'
-                                }
-                              `}
-                            >
-                              {isActive && (
-                                <span className="h-1.5 w-1.5 rounded-full bg-white"></span>
-                              )}
-                            </span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </fieldset>
-                </div>
-                
-                <div className="flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-3 p-4 bg-gray-50 border-t border-gray-200">
-                  <button
-                    onClick={handleClearFilters}
-                    className="px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-bangla-green focus:ring-offset-1"
-                  >
-                    Clear All
-                  </button>
-                  <button 
-                    onClick={closeModal}
-                    className="w-full sm:w-auto px-4 py-2 bg-bangla-green text-white font-medium rounded-lg shadow-md hover:bg-bangla-green-dark focus:outline-none focus:ring-2 focus:ring-bangla-green focus:ring-offset-2"
-                  >
-                    Apply Filters
-                  </button>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-
-        {/* --- Animal Grid (FIXED) --- */}
+        {/* --- Animal Grid --- */}
         {filteredAnimals.length > 0 ? (
-          // The 'gap-8' was missing/broken here. It is now fixed.
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {filteredAnimals.map(animal => (
               <AnimalCard key={animal.id} animal={animal} navigateTo={navigateTo} />
