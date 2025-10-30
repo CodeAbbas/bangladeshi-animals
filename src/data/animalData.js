@@ -11,7 +11,8 @@ export const animalData = [
     "image": "/src/assets/BengalTiger.webp",
     "distribution": ["Khulna", "Bagerhat", "Satkhira"],
     "diet": "Carnivore",
-    "averageLifespan": "10–15 years (in wild)"
+    "averageLifespan": "10–15 years (in wild)",
+    "sound": "/src/assets/sounds/tiger_roar.mp3"
   },
   {
     "id": 2,

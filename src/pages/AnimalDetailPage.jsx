@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react'; // Import hooks
 import PageTransition from '../components/PageTransition';
 import ConservationBadge from '../components/ConservationBadge';
 import AnimalCard from '../components/AnimalCard';
 import { animalData } from '../data/animalData';
+import { Volume2, Pause } from 'lucide-react'; // Import icons
 
 /**
  * Animal Detail Page
@@ -10,6 +11,51 @@ import { animalData } from '../data/animalData';
  */
 const AnimalDetailPage = ({ navigateTo, animalId }) => {
   const animal = animalData.find(a => a.id === animalId);
+  
+  // --- New Audio State ---
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  // --- New Audio Logic ---
+  // This effect handles loading and cleaning up the audio
+  useEffect(() => {
+    // Stop any currently playing audio before changing
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+    
+    if (animal && animal.sound) {
+      // Create new Audio object
+      const audio = new Audio(animal.sound);
+      audio.onended = () => setIsPlaying(false); // Reset when sound finishes
+      audioRef.current = audio;
+    } else {
+      audioRef.current = null; // No sound for this animal
+    }
+
+    // Cleanup function: runs when component unmounts or animal changes
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, [animal]); // Re-run if the animal (and its sound) changes
+
+  // Play/Pause toggle function
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+  // --- End of New Audio Logic ---
+
 
   if (!animal) {
     return (
@@ -68,6 +114,25 @@ const AnimalDetailPage = ({ navigateTo, animalId }) => {
           {/* Quick Facts */}
           <aside className="md:col-span-1 bg-green-50/70 p-6 rounded-2xl shadow-md">
             <h3 className="text-2xl font-bold text-gray-800 mb-4">Quick Facts</h3>
+            
+            {/* --- NEW Animal Sound Button --- */}
+            {animal.sound && (
+              <div className="mb-4">
+                <button
+                  onClick={togglePlay}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-bangla-green text-white font-medium rounded-lg shadow-md hover:bg-bangla-green-dark focus:outline-none focus:ring-2 focus:ring-bangla-green focus:ring-offset-2 transition-all"
+                >
+                  {isPlaying ? (
+                    <Pause className="h-5 w-5" />
+                  ) : (
+                    <Volume2 className="h-5 w-5" />
+                  )}
+                  <span>{isPlaying ? 'Pause Sound' : 'Play Sound'}</span>
+                </button>
+              </div>
+            )}
+            {/* --- End of Animal Sound Button --- */}
+            
             <ul className="space-y-3">
               <li className="flex justify-between">
                 <strong className="text-gray-700">Category:</strong>
