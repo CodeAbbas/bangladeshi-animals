@@ -36,8 +36,7 @@ const SearchBar = ({
 
   return (
     // This relative wrapper is key to positioning the suggestions
-    // FIX: Added z-20 to ensure this whole component is above the animal grid
-    <div className="relative mb-6 z-20">
+    <div className="relative mb-6">
       {/* Search Bar Input */}
       <AnimatePresence>
         {isOpen && (
@@ -49,8 +48,7 @@ const SearchBar = ({
             transition={{ duration: 0.3 }}
             className="overflow-hidden" // Clips the form as it animates
           >
-            {/* FIX: Removed p-2 and bg-transparent for cleaner alignment */}
-            <form onSubmit={onSubmit} className="relative bg-white p-4 rounded-lg shadow-md">
+            <form onSubmit={onSubmit} className="relative bg-transparent rounded-lg p-2">
               <div className="relative">
                 <input
                   ref={searchInputRef}
@@ -65,12 +63,10 @@ const SearchBar = ({
                   <button
                     type="button"
                     onClick={onClear}
-                    // FIX: Changed right-2 to right-3 for better spacing
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 rounded-full"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 rounded-full"
                     aria-label="Clear search"
                   >
-                    {/* FIX: Added the missing X icon */}
-                    <X className="h-4 w-4" /> 
+                    
                   </button>
                 )}
               </div>
@@ -87,14 +83,11 @@ const SearchBar = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { delay: 0.1 } }}
             exit={{ opacity: 0 }}
-            // FIX:
-            // 1. Added z-30 (higher than parent)
-            // 2. Changed w-[97%] to w-full and used padding to align
-            // 3. Changed negative margin to be more precise
-            className="absolute top-full left-0 right-0 z-30 w-full px-4"
-            style={{ marginTop: '-1rem' }} // Pulls it up perfectly
+            // Positions relative to the top 'relative mb-6' wrapper
+            className="absolute top-full left-0 ,right-0 z-10 w-[97%] mx-auto "
+            style={{ marginTop: '0.50rem' }} // Pulls it up to overlap the form's shadow
           >
-            <div className="bg-white shadow-lg rounded-b-lg border border-t-0 border-gray-200 overflow-hidden">
+            <div className="bg-white shadow-lg rounded-lg border border-gray-200 overflow-hidden">
               {suggestions.map(animal => (
                 <button
                   type="button"
