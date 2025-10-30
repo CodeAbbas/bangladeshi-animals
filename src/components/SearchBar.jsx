@@ -48,7 +48,7 @@ const SearchBar = ({
             transition={{ duration: 0.3 }}
             className="overflow-hidden" // Clips the form as it animates
           >
-            <form onSubmit={onSubmit} className="relative bg-transparent rounded-lg">
+            <form onSubmit={onSubmit} className="relative bg-transparent rounded-lg p-2">
               <div className="relative">
                 <input
                   ref={searchInputRef}
@@ -66,7 +66,7 @@ const SearchBar = ({
                     className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 rounded-full"
                     aria-label="Clear search"
                   >
-                    <X className="h-4 w-4" />
+                    
                   </button>
                 )}
               </div>
@@ -84,8 +84,8 @@ const SearchBar = ({
             animate={{ opacity: 1, transition: { delay: 0.1 } }}
             exit={{ opacity: 0 }}
             // Positions relative to the top 'relative mb-6' wrapper
-            className="absolute top-full left-0 right-0 z-10 w-[96%] mx-auto"
-            style={{ marginTop: '-1.25rem' }} // Pulls it up to overlap the form's shadow
+            className="absolute top-full left-0 right-0 z-10 w-[98%] mx-auto"
+            style={{ marginTop: '-1rem' }} // Pulls it up to overlap the form's shadow
           >
             <div className="bg-white shadow-lg rounded-b-lg border border-t-0 border-gray-200 overflow-hidden">
               {suggestions.map(animal => (
