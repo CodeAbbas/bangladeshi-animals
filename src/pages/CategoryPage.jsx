@@ -14,7 +14,6 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // This list *always* contains 'all' and all other statuses. It never changes.
   const conservationStatuses = useMemo(() => [
     'all',
     ...new Set(animalData.filter(a => a.category === categoryName).map(a => a.conservationStatus))
@@ -109,37 +108,59 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   </div>
                   
-                  {/* Tag Selector */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                  {/* --- NEW Appealing Radio Button Group --- */}
+                  <fieldset>
+                    <legend className="block text-sm font-medium text-gray-700 mb-3">
                       Conservation Status
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {/* This .map() function *always* loops over every status */}
+                    </legend>
+                    <div className="space-y-2">
                       {conservationStatuses.map((status) => {
-                        // It just checks if the current status is the active one
                         const isActive = statusFilter === status;
                         return (
-                          <button
+                          <label
                             key={status}
-                            // Clicking sets the *one* active status
-                            onClick={() => setStatusFilter(status)}
+                            htmlFor={status}
                             className={`
-                              px-3 py-1 text-sm font-medium rounded-full border transition-colors
+                              flex items-center justify-between w-full p-3 rounded-lg border cursor-pointer transition-all
                               ${isActive 
-                                // Active style
-                                ? 'bg-bangla-green text-white border-bangla-green' 
-                                // Inactive style
-                                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                ? 'bg-green-50 border-bangla-green ring-1 ring-bangla-green' 
+                                : 'bg-white border-gray-300 hover:bg-gray-50'
                               }
                             `}
                           >
-                            {status === 'all' ? 'All' : status}
-                          </button>
+                            {/* Visually hidden radio input */}
+                            <input
+                              type="radio"
+                              id={status}
+                              name="conservationStatus"
+                              value={status}
+                              checked={isActive}
+                              onChange={() => setStatusFilter(status)}
+                              className="sr-only" // Hides the default radio
+                            />
+                            <span className={`font-medium ${isActive ? 'text-bangla-green' : 'text-gray-700'}`}>
+                              {status === 'all' ? 'All' : status}
+                            </span>
+                            {/* Custom "radial" circle */}
+                            <span 
+                              className={`
+                                h-5 w-5 rounded-full border flex items-center justify-center
+                                ${isActive 
+                                  ? 'bg-bangla-green border-bangla-green' 
+                                  : 'bg-white border-gray-400'
+                                }
+                              `}
+                            >
+                              {isActive && (
+                                <span className="h-1.5 w-1.5 rounded-full bg-white"></span>
+                              )}
+                            </span>
+                          </label>
                         );
                       })}
                     </div>
-                  </div>
+                  </fieldset>
+                  {/* --- End of Radio Group --- */}
                 </div>
                 
                 {/* Modal Footer */}
