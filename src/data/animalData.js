@@ -23,7 +23,7 @@ export const animalData = [
     "habitat": "Rivers and coastal waters (Padma, Meghna, Jamuna)",
     "conservationStatus": "Least Concern",
     "description": "The national fish of Bangladesh, Hilsa is renowned for its delicious taste. It's an anadromous fish, migrating upstream to spawn.",
-    "image": "https://placehold.co/600x400/4682B4/FFFFFF?text=Hilsa+Fish",
+    "image": "/src/assets/fish/Hilsha.webp",
     "distribution": ["Chandpur", "Barisal", "Patuakhali", "Bhola"],
     "diet": "Planktivore",
     "averageLifespan": "6–7 years"
@@ -37,7 +37,7 @@ export const animalData = [
     "habitat": "Urban areas, rural gardens, and open forests",
     "conservationStatus": "Least Concern",
     "description": "The national bird of Bangladesh, the Doel is a common and beloved songbird known for its distinctive black-and-white plumage and melodious call.",
-    "image": "https://placehold.co/600x400/333333/FFFFFF?text=Magpie-Robin",
+    "image": "/src/assets/birds/OrientalMagpie-Robin.webp",
     "distribution": ["Nationwide"],
     "diet": "Insectivore",
     "averageLifespan": "8–10 years"
@@ -51,7 +51,7 @@ export const animalData = [
     "habitat": "Ganges-Brahmaputra-Meghna and Karnaphuli-Sangu river systems",
     "conservationStatus": "Endangered",
     "description": "A freshwater dolphin with a long, pointed snout, this species is effectively blind and navigates using echolocation. It is a key indicator of river health.",
-    "image": "https://placehold.co/600x400/6B8E23/FFFFFF?text=Ganges+Dolphin",
+    "image": "/src/assets/fish/Ganges River Dolphin.webp",
     "distribution": ["Padma River", "Jamuna River", "Sundarbans"],
     "diet": "Piscivore",
     "averageLifespan": "20–26 years"
@@ -65,7 +65,7 @@ export const animalData = [
     "habitat": "Dense forests and mangrove swamps",
     "conservationStatus": "Vulnerable",
     "description": "The world's longest venomous snake, the King Cobra primarily preys on other snakes. It is found in the Sundarbans and forested areas of Sylhet and Chattogram.",
-    "image": "https://placehold.co/600x400/556B2F/FFFFFF?text=King+Cobra",
+    "image": "/src/assets/reptile/Cobra.webp",
     "distribution": ["Sundarbans", "Sylhet", "Chattogram"],
     "diet": "Ophiophagus (eats other snakes)",
     "averageLifespan": "20 years"
@@ -79,7 +79,7 @@ export const animalData = [
     "habitat": "Mangrove swamps, estuaries, and coastal rivers",
     "conservationStatus": "Least Concern (globally), Vulnerable (in Bangladesh)",
     "description": "The largest living reptile, found in the Sundarbans. It is an apex predator, playing a crucial role in the mangrove ecosystem.",
-    "image": "https://placehold.co/600x400/8FBC8F/FFFFFF?text=Saltwater+Crocodile",
+    "image": "/src/assets/reptile/Saltwater Crocodile.webp",
     "distribution": ["Sundarbans"],
     "diet": "Carnivore",
     "averageLifespan": "70 years"
@@ -93,7 +93,7 @@ export const animalData = [
     "habitat": "Gardens, scrublands, and open forests",
     "conservationStatus": "Least Concern",
     "description": "A small, brightly colored bird famous for its nest, which it builds by 'sewing' large leaves together with plant fiber or spider silk.",
-    "image": "https://placehold.co/600x400/9ACD32/FFFFFF?text=Tailorbird",
+    "image": "/src/assets/birds/Common Tailorbird.webp",
     "distribution": ["Nationwide"],
     "diet": "Insectivore",
     "averageLifespan": "3–5 years"
@@ -107,7 +107,7 @@ export const animalData = [
     "habitat": "Moist forests, plantations, and rural gardens",
     "conservationStatus": "Data Deficient",
     "description": "These amphibians are excellent climbers, thanks to the adhesive discs on their toes. They are often found in trees and shrubs near water bodies.",
-    "image": "https://placehold.co/600x400/32CD32/FFFFFF?text=Tree+Frog",
+    "image": "/src/assets/amphibian/Green Tree Frog.webp",
     "distribution": ["Sylhet", "Chattogram Hill Tracts"],
     "diet": "Insectivore",
     "averageLifespan": "5–8 years"
@@ -121,7 +121,7 @@ export const animalData = [
     "habitat": "Tropical and subtropical forests",
     "conservationStatus": "Not Evaluated",
     "description": "One of the largest moths in the world by wingspan. The adults have no functional mouths and live only for a few days to reproduce.",
-    "image": "https://placehold.co/600x400/D2B48C/FFFFFF?text=Atlas+Moth",
+    "image": "/src/assets/Invertebrate/Atlas Moth.webp",
     "distribution": ["Lawachara National Park", "Satchari National Park"],
     "diet": "Does not eat (as adult)",
     "averageLifespan": "1–2 weeks (as adult)"
@@ -135,7 +135,7 @@ export const animalData = [
     "habitat": "Hill forests",
     "conservationStatus": "Critically Endangered (in Bangladesh)",
     "description": "Identified by the white 'V' or 'crescent moon' mark on its chest. This species is facing extreme threat in Bangladesh due to habitat loss and poaching.",
-    "image": "https://placehold.co/600x400/696969/FFFFFF?text=Asiatic+Black+Bear",
+    "image": "/src/assets/mammal/Asiatic Black Bear.webp",
     "distribution": ["Chattogram Hill Tracts", "Sylhet"],
     "diet": "Omnivore",
     "averageLifespan": "25–30 years"
