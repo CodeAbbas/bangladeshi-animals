@@ -85,7 +85,7 @@ const SearchBar = ({
             exit={{ opacity: 0 }}
             // Positions relative to the top 'relative mb-6' wrapper
             className="absolute top-full left-0 right-0 z-10 w-[97%] mx-auto "
-            style={{ marginTop: '-0.60rem' }} // Pulls it up to overlap the form's shadow
+            style={{ marginTop: '0.50rem' }} // Pulls it up to overlap the form's shadow
           >
             <div className="bg-white shadow-lg rounded-lg border border-gray-200 overflow-hidden">
               {suggestions.map(animal => (
