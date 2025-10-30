@@ -85,10 +85,10 @@ const SearchBar = ({
             animate={{ opacity: 1, transition: { delay: 0.1 } }}
             exit={{ opacity: 0 }}
             
-            className="absolute top-full left-0 right-0 z-30 w-[97%] mx-auto backdrop-blur-sm"
+            className="absolute top-full left-0 right-0 z-30 w-[97%] mx-auto bg-white backdrop-blur-sm"
             style={{ marginTop: '0.50rem' }}
           >
-            <div className="bg-black backdrop-blur-sm shadow-lg rounded-lg border border-gray-200 overflow-hidden">
+            <div className="bg-transparent backdrop-blur-sm shadow-lg rounded-lg border border-gray-200 overflow-hidden">
               
               {/* --- Suggestion Item --- */}
               {suggestions.map(animal => (
