@@ -84,10 +84,10 @@ const SearchBar = ({
             animate={{ opacity: 1, transition: { delay: 0.1 } }}
             exit={{ opacity: 0 }}
             // Positions relative to the top 'relative mb-6' wrapper
-            className="absolute top-full left-0 right-0 z-10 w-[97%] mx-auto border border-gray-300"
-            style={{ marginTop: '-0.70rem' }} // Pulls it up to overlap the form's shadow
+            className="absolute top-full left-0 right-0 z-10 w-[97%] mx-auto "
+            style={{ marginTop: '-0.60rem' }} // Pulls it up to overlap the form's shadow
           >
-            <div className="bg-white shadow-lg rounded-b-lg border border-t-0 border-gray-200 overflow-hidden">
+            <div className="bg-white shadow-lg rounded-lg border border-gray-200 overflow-hidden">
               {suggestions.map(animal => (
                 <button
                   type="button"
