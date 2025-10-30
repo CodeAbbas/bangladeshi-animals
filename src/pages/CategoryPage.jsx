@@ -13,44 +13,46 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [isFilterOpen, setIsFilterOpen] = useState(false); // State to manage toggle
-  
+
   const filteredAnimals = useMemo(() => {
     return animalData
       .filter(animal => animal.category === categoryName)
-      .filter(animal =>
+      .filter(animal => 
         animal.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         animal.banglaName.includes(searchTerm)
       )
-      .filter(animal =>
+      .filter(animal => 
         statusFilter === 'all' || animal.conservationStatus === statusFilter
       );
   }, [categoryName, searchTerm, statusFilter]);
   
   const conservationStatuses = [
-    'all',
+    'all', 
     ...new Set(animalData.filter(a => a.category === categoryName).map(a => a.conservationStatus))
   ];
-  
+
   return (
     <PageTransition>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-4xl font-bold text-gray-800 mb-8">{categoryName}</h1>
         
-        {/* --- New Integrated Filter Component --- */}
-        <div className="bg-white rounded-lg shadow-md mb-8 overflow-hidden">
-          {/* Clickable Header */}
+        {/* --- More Appealing Integrated Filter Component --- */}
+        {/* Wrapper has shadow and a light border for definition */}
+        <div className="rounded-lg shadow-md mb-8 overflow-hidden border border-gray-200">
+          
+          {/* Clickable Header with a distinct background */}
           <button
             onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="w-full flex justify-between items-center p-4 text-left font-medium text-gray-800 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-bangla-green"
+            className="w-full flex justify-between items-center p-4 text-left font-medium text-gray-800 bg-gray-50 hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-bangla-green"
             aria-expanded={isFilterOpen}
             aria-controls="filter-panel"
           >
             <span className="flex items-center gap-2">
               <SlidersHorizontal className="h-5 w-5 text-gray-600" />
-              <span>Filters</span>
+              <span className="text-gray-700">Filters</span>
             </span>
             <ChevronDown 
-              className={`h-5 w-5 text-gray-600 transition-transform duration-200 ${isFilterOpen ? 'rotate-180' : ''}`} 
+              className={`h-5 w-5 text-gray-600 transition-transform duration-300 ${isFilterOpen ? 'rotate-180' : ''}`} 
             />
           </button>
 
@@ -62,18 +64,18 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="overflow-hidden" // Ensures content doesn't leak during animation
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                className="overflow-hidden"
               >
-                {/* Inner wrapper for padding and border */}
-                <div className="p-4 border-t border-gray-200 flex flex-col md:flex-row gap-4">
+                {/* Inner wrapper is now bg-white (contrasting the header) */}
+                <div className="p-4 bg-white flex flex-col md:flex-row gap-4">
                   
                   {/* Search Input */}
                   <div className="relative flex-grow">
                     <input
                       type="search"
                       placeholder={`Search in ${categoryName}...`}
-                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-bangla-green"
+                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-bangla-green bg-white"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -83,7 +85,7 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                   {/* Status Select */}
                   <div className="relative flex-grow md:max-w-xs">
                     <select
-                      className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-bangla-green"
+                      className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-bangla-green bg-white"
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
                       aria-label="Filter by conservation status"
