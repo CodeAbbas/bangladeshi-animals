@@ -120,7 +120,7 @@ const AnimalDetailPage = ({ navigateTo, animalId }) => {
               <div className="mb-4">
                 <button
                   onClick={togglePlay}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-bangla-green text-white font-medium rounded-lg shadow-md hover:bg-bangla-green-dark focus:outline-none focus:ring-2 focus:ring-bangla-green focus:ring-offset-2 transition-all"
+                  className="p-2 rounded-full bg-white shadow-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-bangla-green"
                 >
                   {isPlaying ? (
                     <Pause className="h-5 w-5" />
