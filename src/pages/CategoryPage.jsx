@@ -10,7 +10,7 @@ import { animalData } from '../data/animalData';
  * @param {{navigateTo: Function, categoryName: string}} props
  */
 const CategoryPage = ({ navigateTo, categoryName }) => {
-  // State for the *final* submitted search
+  // State for the *final* submitted search filter
   const [searchTerm, setSearchTerm] = useState('');
   // State for the *live input* in the search bar
   const [searchQuery, setSearchQuery] = useState('');
@@ -20,50 +20,56 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   
   const searchInputRef = useRef(null);
-  
-  // Focus search input when it opens
+
+  // When search opens, set query to active filter and focus the input
   useEffect(() => {
-    if (isSearchOpen && searchInputRef.current) {
-      searchInputRef.current.focus();
+    if (isSearchOpen) {
+      setSearchQuery(searchTerm); // Sync input with active filter
+      searchInputRef.current?.focus();
     }
-  }, [isSearchOpen]);
-  
+  }, [isSearchOpen, searchTerm]); // Removed extra dependency
+
   // Get list of animals in this category
-  const categoryAnimals = useMemo(() =>
-    animalData.filter(a => a.category === categoryName),
+  const categoryAnimals = useMemo(() => 
+    animalData.filter(a => a.category === categoryName), 
     [categoryName]
   );
-  
+
   // Get unique statuses for the modal
   const conservationStatuses = useMemo(() => [
-    'all',
+    'all', 
     ...new Set(categoryAnimals.map(a => a.conservationStatus))
   ], [categoryAnimals]);
-  
+
   // Generate live search suggestions
   const suggestions = useMemo(() => {
-    if (searchQuery.length < 2) return []; // Only show suggestions after 2+ chars
-    return categoryAnimals.filter(animal =>
-      animal.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      animal.banglaName.includes(searchQuery)
+    if (searchQuery.length < 1) return []; // Show suggestions from 1+ char
+    
+    const query = searchQuery.toLowerCase();
+    return categoryAnimals.filter(animal => 
+      animal.name.toLowerCase().includes(query) ||
+      animal.banglaName.includes(searchQuery) || // Keep exact match for Bengali
+      animal.description.toLowerCase().includes(query) // Also search description
     ).slice(0, 4); // Show max 4 suggestions
   }, [searchQuery, categoryAnimals]);
-  
+
   // Filter the main grid based on *submitted* search and filter
   const filteredAnimals = useMemo(() => {
+    const query = searchTerm.toLowerCase();
     return categoryAnimals
-      .filter(animal =>
-        animal.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        animal.banglaName.includes(searchTerm)
+      .filter(animal => 
+        animal.name.toLowerCase().includes(query) ||
+        animal.banglaName.includes(searchTerm) ||
+        animal.description.toLowerCase().includes(query)
       )
-      .filter(animal =>
+      .filter(animal => 
         statusFilter === 'all' || animal.conservationStatus === statusFilter
       );
   }, [categoryAnimals, searchTerm, statusFilter]);
   
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  
+
   const handleClearFilters = () => {
     setStatusFilter('all');
   };
@@ -81,7 +87,14 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
     setSearchTerm(animal.name); // Submit the search
     setIsSearchOpen(false); // Close the search bar
   };
-  
+
+  // Handle clearing the search input
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setSearchTerm('');
+    searchInputRef.current?.focus();
+  };
+
   return (
     <PageTransition>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -91,16 +104,13 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
           <h1 className="text-4xl font-bold text-gray-800">{categoryName}</h1>
           
           <div className="flex items-center gap-2">
-            {/* Search Toggle Button */}
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
               className="p-2 rounded-full bg-white shadow-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-bangla-green"
-              aria-label="Open search"
+              aria-label="Toggle search"
             >
               <Search className="h-5 w-5" />
             </button>
-            
-            {/* Filter Toggle Button */}
             <button
               onClick={openModal}
               className="p-2 rounded-full bg-white shadow-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-bangla-green"
@@ -122,15 +132,29 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
               className="mb-6 overflow-hidden"
             >
               <form onSubmit={handleSearchSubmit} className="relative bg-white p-4 rounded-lg shadow-md">
-                <input
-                  ref={searchInputRef}
-                  type="search"
-                  placeholder={`Search in ${categoryName}...`}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-bangla-green"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <Search className="absolute left-7 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
+                <div className="relative">
+                  <input
+                    ref={searchInputRef}
+                    type="search"
+                    placeholder={`Search in ${categoryName}...`}
+                    className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-bangla-green"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
+                  
+                  {/* Clear Search Button */}
+                  {searchQuery.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={handleClearSearch}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 rounded-full"
+                      aria-label="Clear search"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
                 
                 {/* Suggestions List */}
                 {suggestions.length > 0 && (
@@ -140,7 +164,7 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                         type="button"
                         key={animal.id}
                         onClick={() => handleSuggestionClick(animal)}
-                        className="w-full text-left px-4 py-3 hover:bg-gray-100"
+                        className="w-full text-left px-4 py-3 hover:bg-gray-100 transition-colors"
                       >
                         {animal.name} <span className="text-gray-500 italic">({animal.banglaName})</span>
                       </button>
@@ -180,7 +204,6 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                 </div>
 
                 <div className="px-6 pb-6">
-                  {/* --- Radio Button Group --- */}
                   <fieldset>
                     <legend className="block text-sm font-medium text-gray-700 mb-3">
                       Conservation Status
@@ -206,18 +229,15 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                             <span className={`font-medium ${isActive ? 'text-bangla-green' : 'text-gray-700'}`}>
                               {status === 'all' ? 'All' : status}
                             </span>
-                            
-                            {/* --- UPDATED Radio Button Visual --- */}
                             <span 
                               className={`
                                 h-5 w-5 rounded-full border-2 flex items-center justify-center transition-all
                                 ${isActive 
-                                  ? 'bg-bangla-green border-bangla-green' // Solid fill when active
-                                  : 'bg-white border-gray-400' // Empty when inactive
+                                  ? 'bg-bangla-green border-bangla-green' 
+                                  : 'bg-white border-gray-400'
                                 }
                               `}
                             >
-                              {/* White inner dot for contrast on the solid fill */}
                               {isActive && (
                                 <span className="h-1.5 w-1.5 rounded-full bg-white"></span>
                               )}
@@ -248,9 +268,10 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
           )}
         </AnimatePresence>
 
-        {/* --- Animal Grid --- */}
+        {/* --- Animal Grid (FIXED) --- */}
         {filteredAnimals.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:g:ap-8">
+          // The 'gap-8' was missing/broken here. It is now fixed.
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {filteredAnimals.map(animal => (
               <AnimalCard key={animal.id} animal={animal} navigateTo={navigateTo} />
             ))}
