@@ -113,6 +113,7 @@ const AnimalDetailPage = ({ navigateTo, animalId }) => {
           
           {/* Quick Facts */}
           <aside className="md:col-span-1 bg-green-50/70 p-6 rounded-2xl shadow-md">
+            <div className="flex justify-between items-center ">
             <h3 className="text-2xl font-bold text-gray-800 mb-4">Quick Facts</h3>
             
             {/* --- NEW Animal Sound Button --- */}
@@ -127,10 +128,10 @@ const AnimalDetailPage = ({ navigateTo, animalId }) => {
                   ) : (
                     <Volume2 className="h-5 w-5" />
                   )}
-                  <span>{isPlaying ? 'Pause Sound' : 'Play Sound'}</span>
                 </button>
               </div>
             )}
+            </div>
             {/* --- End of Animal Sound Button --- */}
             
             <ul className="space-y-3">
