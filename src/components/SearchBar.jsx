@@ -10,7 +10,7 @@ import { Search, X } from 'lucide-react';
  * onQueryChange: (query: string) => void,
  * onClear: () => void,
  * onSubmit: (e: React.FormEvent) => void,
- * suggestions: Array<{id: number | string, name: string, banglaName: string}>,
+ * suggestions: Array<{id: number | string, name: string, banglaName: string, image: string}>, // Added image to prop type
  * onSuggestionClick: (animal: any) => void,
  * placeholder: string
  * }} props
@@ -35,8 +35,9 @@ const SearchBar = ({
   }, [isOpen]);
 
   return (
-    // This relative wrapper is key to positioning the suggestions
-    <div className="relative mb-6">
+    // This relative wrapper is key.
+    // z-20 ensures this component sits on top of the AnimalCard grid.
+    <div className="relative mb-6 z-20">
       {/* Search Bar Input */}
       <AnimatePresence>
         {isOpen && (
@@ -46,7 +47,7 @@ const SearchBar = ({
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden" // Clips the form as it animates
+            // !! BUG FIX: Removed "overflow-hidden" which was clipping the suggestions
           >
             <form onSubmit={onSubmit} className="relative bg-transparent rounded-lg p-2">
               <div className="relative">
@@ -66,7 +67,8 @@ const SearchBar = ({
                     className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 rounded-full"
                     aria-label="Clear search"
                   >
-                    
+                    {/* !! BUG FIX: Added the missing X icon */}
+                    <X className="h-4 w-4" />
                   </button>
                 )}
               </div>
@@ -83,21 +85,38 @@ const SearchBar = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { delay: 0.1 } }}
             exit={{ opacity: 0 }}
-            // Positions relative to the top 'relative mb-6' wrapper
-            className="absolute top-full left-0 ,right-0 z-10 w-[97%] mx-auto "
-            style={{ marginTop: '0.50rem' }} // Pulls it up to overlap the form's shadow
+            // !! BUG FIX:
+            // 1. z-30 (higher than parent) ensures it's on top of all content.
+            // 2. Adjusted width and margin to align perfectly with the input box above.
+            className="absolute top-full left-0 right-0 z-30 w-[97%] mx-auto"
+            style={{ marginTop: '0.50rem' }} // Kept your style
           >
             <div className="bg-white shadow-lg rounded-lg border border-gray-200 overflow-hidden">
+              
+              {/* --- NEW: Rich Suggestion Item --- */}
               {suggestions.map(animal => (
                 <button
                   type="button"
                   key={animal.id}
                   onClick={() => onSuggestionClick(animal)}
-                  className="w-full text-left px-4 py-3 hover:bg-gray-100 transition-colors"
+                  className="w-full text-left px-3 py-2 hover:bg-gray-100 transition-colors flex items-center gap-3"
                 >
-                  {animal.name} <span className="text-gray-500 italic">({animal.banglaName})</span>
+                  {/* Image Thumbnail */}
+                  <img 
+                    src={animal.image}
+                    alt={animal.name}
+                    className="w-12 h-12 rounded-md object-cover flex-shrink-0"
+                    onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/48x48/cccccc/FFFFFF?text=?'; }}
+                  />
+                  {/* Text Content */}
+                  <div>
+                    <div className="font-medium text-gray-800">{animal.name}</div>
+                    <div className="text-sm text-gray-500 italic">{animal.banglaName}</div>
+                  </div>
                 </button>
               ))}
+              {/* --- End of Rich Suggestion Item --- */}
+
             </div>
           </motion.div>
         )}
