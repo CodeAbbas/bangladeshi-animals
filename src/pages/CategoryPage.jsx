@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, SlidersHorizontal, X } from 'lucide-react'; // Removed ChevronDown
+import { Search, SlidersHorizontal, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition';
 import AnimalCard from '../components/AnimalCard';
@@ -14,7 +14,6 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // Get unique statuses, putting 'all' at the beginning
   const conservationStatuses = useMemo(() => [
     'all',
     ...new Set(animalData.filter(a => a.category === categoryName).map(a => a.conservationStatus))
@@ -34,6 +33,12 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
   
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  
+  // New handler to clear filters
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setStatusFilter('all');
+  };
   
   return (
     <PageTransition>
@@ -65,26 +70,25 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                 aria-hidden="true"
               />
 
-              {/* Modal Panel - **FIXED POSITIONING** */}
+              {/* Modal Panel */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                // Centered vertically and horizontally
-                className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90vw] max-w-md bg-white rounded-xl shadow-2xl p-6"
+                className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90vw] max-w-md bg-white rounded-xl shadow-2xl overflow-hidden"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="filter-modal-title"
               >
                 {/* Modal Header */}
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex justify-between items-center p-6 pb-4">
                   <h2 id="filter-modal-title" className="text-xl font-semibold text-gray-800">
                     Filters
                   </h2>
                   <button
                     onClick={closeModal}
-                    className="p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-bangla-green"
+                    className="-mt-1 -mr-1 p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-bangla-green"
                     aria-label="Close modal"
                   >
                     <X className="h-5 w-5" />
@@ -92,7 +96,7 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                 </div>
 
                 {/* Modal Body (Filter Inputs) */}
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-6 px-6 pb-6">
                   {/* Search Bar */}
                   <div className="relative">
                     <input
@@ -105,9 +109,9 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   </div>
                   
-                  {/* --- NEW Tag Selector --- */}
+                  {/* Tag Selector */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">
                       Conservation Status
                     </label>
                     <div className="flex flex-wrap gap-2">
@@ -125,18 +129,25 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                               }
                             `}
                           >
-                            {/* Capitalize 'all' for display */}
                             {status === 'all' ? 'All' : status}
                           </button>
                         );
                       })}
                     </div>
                   </div>
-                  {/* --- End of Tag Selector --- */}
-
+                </div>
+                
+                {/* --- NEW Modal Footer --- */}
+                <div className="flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-3 p-4 bg-gray-50 border-t border-gray-200">
+                  <button
+                    onClick={handleClearFilters}
+                    className="px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-bangla-green focus:ring-offset-1"
+                  >
+                    Clear All
+                  </button>
                   <button 
                     onClick={closeModal}
-                    className="w-full mt-2 px-4 py-2 bg-bangla-green text-white font-medium rounded-lg shadow-md hover:bg-bangla-green-dark focus:outline-none focus:ring-2 focus:ring-bangla-green focus:ring-offset-2"
+                    className="w-full sm:w-auto px-4 py-2 bg-bangla-green text-white font-medium rounded-lg shadow-md hover:bg-bangla-green-dark focus:outline-none focus:ring-2 focus:ring-bangla-green focus:ring-offset-2"
                   >
                     Apply Filters
                   </button>
