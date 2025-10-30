@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, ChevronDown, SlidersHorizontal, X } from 'lucide-react'; // Added X icon
+import { Search, SlidersHorizontal, X } from 'lucide-react'; // Removed ChevronDown
 import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/PageTransition';
 import AnimalCard from '../components/AnimalCard';
@@ -12,7 +12,13 @@ import { animalData } from '../data/animalData';
 const CategoryPage = ({ navigateTo, categoryName }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // Get unique statuses, putting 'all' at the beginning
+  const conservationStatuses = useMemo(() => [
+    'all',
+    ...new Set(animalData.filter(a => a.category === categoryName).map(a => a.conservationStatus))
+  ], [categoryName]);
   
   const filteredAnimals = useMemo(() => {
     return animalData
@@ -26,12 +32,6 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
       );
   }, [categoryName, searchTerm, statusFilter]);
   
-  const conservationStatuses = [
-    'all',
-    ...new Set(animalData.filter(a => a.category === categoryName).map(a => a.conservationStatus))
-  ];
-  
-  // Handlers to control the modal
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   
@@ -39,11 +39,9 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
     <PageTransition>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-        {/* --- Page Header & Filter Button --- */}
+        {/* Page Header & Filter Button */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800">{categoryName}</h1>
-          
-          {/* Small Filter Icon Button */}
           <button
             onClick={openModal}
             className="p-2 rounded-full bg-white shadow-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-bangla-green"
@@ -52,16 +50,14 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
             <SlidersHorizontal className="h-5 w-5" />
           </button>
         </div>
-        {/* --- End of Header --- */}
 
-
-        {/* --- Filter Modal (Glossy) --- */}
+        {/* Filter Modal */}
         <AnimatePresence>
           {isModalOpen && (
             <>
               {/* Backdrop Overlay */}
               <motion.div
-                onClick={closeModal} // Click overlay to close
+                onClick={closeModal}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -69,19 +65,20 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                 aria-hidden="true"
               />
 
-              {/* Modal Panel */}
+              {/* Modal Panel - **FIXED POSITIONING** */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                className="fixed top-24 left-1/2 -translate-x-1/2 z-50 w-[90vw] max-w-md bg-white rounded-xl shadow-2xl p-6"
+                // Centered vertically and horizontally
+                className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90vw] max-w-md bg-white rounded-xl shadow-2xl p-6"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="filter-modal-title"
               >
                 {/* Modal Header */}
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-between items-center mb-6">
                   <h2 id="filter-modal-title" className="text-xl font-semibold text-gray-800">
                     Filters
                   </h2>
@@ -95,7 +92,8 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                 </div>
 
                 {/* Modal Body (Filter Inputs) */}
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-5">
+                  {/* Search Bar */}
                   <div className="relative">
                     <input
                       type="search"
@@ -107,20 +105,34 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   </div>
                   
-                  <div className="relative">
-                    <select
-                      className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-bangla-green"
-                      value={statusFilter}
-                      onChange={(e) => setStatusFilter(e.target.value)}
-                      aria-label="Filter by conservation status"
-                    >
-                      <option value="all">All Conservation Statuses</option>
-                      {conservationStatuses.filter(s => s !== 'all').map(status => (
-                        <option key={status} value={status}>{status}</option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
+                  {/* --- NEW Tag Selector --- */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Conservation Status
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {conservationStatuses.map((status) => {
+                        const isActive = statusFilter === status;
+                        return (
+                          <button
+                            key={status}
+                            onClick={() => setStatusFilter(status)}
+                            className={`
+                              px-3 py-1 text-sm font-medium rounded-full border transition-colors
+                              ${isActive 
+                                ? 'bg-bangla-green text-white border-bangla-green' 
+                                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                              }
+                            `}
+                          >
+                            {/* Capitalize 'all' for display */}
+                            {status === 'all' ? 'All' : status}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
+                  {/* --- End of Tag Selector --- */}
 
                   <button 
                     onClick={closeModal}
@@ -133,8 +145,6 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
             </>
           )}
         </AnimatePresence>
-        {/* --- End of Filter Modal --- */}
-
 
         {/* Animal Grid */}
         {filteredAnimals.length > 0 ? (
