@@ -14,6 +14,7 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   
+  // This list *always* contains 'all' and all other statuses. It never changes.
   const conservationStatuses = useMemo(() => [
     'all',
     ...new Set(animalData.filter(a => a.category === categoryName).map(a => a.conservationStatus))
@@ -34,7 +35,6 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   
-  // New handler to clear filters
   const handleClearFilters = () => {
     setSearchTerm('');
     setStatusFilter('all');
@@ -115,16 +115,21 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                       Conservation Status
                     </label>
                     <div className="flex flex-wrap gap-2">
+                      {/* This .map() function *always* loops over every status */}
                       {conservationStatuses.map((status) => {
+                        // It just checks if the current status is the active one
                         const isActive = statusFilter === status;
                         return (
                           <button
                             key={status}
+                            // Clicking sets the *one* active status
                             onClick={() => setStatusFilter(status)}
                             className={`
                               px-3 py-1 text-sm font-medium rounded-full border transition-colors
                               ${isActive 
+                                // Active style
                                 ? 'bg-bangla-green text-white border-bangla-green' 
+                                // Inactive style
                                 : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                               }
                             `}
@@ -137,7 +142,7 @@ const CategoryPage = ({ navigateTo, categoryName }) => {
                   </div>
                 </div>
                 
-                {/* --- NEW Modal Footer --- */}
+                {/* Modal Footer */}
                 <div className="flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-3 p-4 bg-gray-50 border-t border-gray-200">
                   <button
                     onClick={handleClearFilters}
