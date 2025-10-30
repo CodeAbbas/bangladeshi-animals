@@ -64,11 +64,10 @@ const SearchBar = ({
                   <button
                     type="button"
                     onClick={onClear}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 rounded-full"
+                    className="absolute -right-2 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600 rounded-full"
                     aria-label="Clear search"
                   >
-                    {/* !! BUG FIX: Added the missing X icon */}
-                    <X className="h-4 w-4" />
+                    
                   </button>
                 )}
               </div>
@@ -77,7 +76,7 @@ const SearchBar = ({
         )}
       </AnimatePresence>
 
-      {/* Suggestions List (Positioned outside the animated div to fix overflow) */}
+      
       <AnimatePresence>
         {isOpen && suggestions.length > 0 && (
           <motion.div
@@ -85,15 +84,13 @@ const SearchBar = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { delay: 0.1 } }}
             exit={{ opacity: 0 }}
-            // !! BUG FIX:
-            // 1. z-30 (higher than parent) ensures it's on top of all content.
-            // 2. Adjusted width and margin to align perfectly with the input box above.
+            
             className="absolute top-full left-0 right-0 z-30 w-[97%] mx-auto"
-            style={{ marginTop: '0.50rem' }} // Kept your style
+            style={{ marginTop: '0.50rem' }}
           >
             <div className="bg-white shadow-lg rounded-lg border border-gray-200 overflow-hidden">
               
-              {/* --- NEW: Rich Suggestion Item --- */}
+              {/* --- Suggestion Item --- */}
               {suggestions.map(animal => (
                 <button
                   type="button"
